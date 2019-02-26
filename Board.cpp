@@ -9,11 +9,7 @@
 #include <cstdlib>
 #include <unistd.h>
 
-// When writing a class implementation file, you must "#include" the class
-// declaration file.
 #include "Board.h"
-
-// We also use the conio namespace contents, so must "#include" the conio declarations.
 #include "conio.h"
 
 /**
@@ -30,7 +26,7 @@ Board::Board(int rows, int cols, int numberOfHumans) {
     numCols = cols;
     currentTime = 0;
     uSleepTime = 150000;
-    numInfected=0;
+    numInfected = 0;
     numCured = 0;
     numDoctors = 0;
 }
@@ -42,8 +38,8 @@ Board::Board(int rows, int cols, int numberOfHumans) {
  * it needs to return all the memory borrowed for creating the Human objects.
  */
 Board::~Board() {
-    for(int pos=0; pos<numHumans; ++pos) {
-	delete humans[pos];
+    for (int pos = 0; pos < numHumans; ++pos) {
+	    delete humans[pos];
     }
 }
 
@@ -55,54 +51,53 @@ void Board::run() {
     int row, col;
 
     // Creates 'Human' objects and sets the array pointers to point at them.
-    for(int pos=0; pos<numHumans; ++pos) {
-
-	row = pos%numRows;       // row will be in range(0, numRows-1)
-	col = random()%numCols;  // col will be in range(0, numCols-1)
-	// Create and initialize another Human. 
-	// Parameters are  row on board, col on board, initialy infected, 
-	// and a pointer to this board object ('this').
-	humans[pos] = new Human(row, col, false, this); 
+    for (int pos = 0; pos < numHumans; ++pos) {
+        row = pos % numRows;       // row will be in range(0, numRows-1)
+        col = random() % numCols;  // col will be in range(0, numCols-1)
+        // Create and initialize another Human. 
+        // Parameters are  row on board, col on board, initialy infected, 
+        // and a pointer to this board object ('this').
+        humans[pos] = new Human(row, col, false, this); 
     }
     // Infect a random human in the range 0 to numHumans-1
-    humans[random()%numHumans]->setInfected();
+    humans[random() % numHumans]->setInfected();
 
     // Set a random human as a doctor
-    humans[random()%numHumans]->setDoctor();
+    humans[random() % numHumans]->setDoctor();
     numCured += 1;
     numDoctors += 1;
 
 
-    for(currentTime=0; allInfected() == false; ++currentTime) {
-	// Clear screen before every new time unit
-	cout << conio::clrscr() << flush;
+    for (currentTime = 0; allInfected() == false; ++currentTime) {
+        // Clear screen before every new time unit
+        cout << conio::clrscr() << flush;
 
-	// Tell each human to try moving
-	for(int pos=0; pos<numHumans; ++pos) {
-	    humans[pos]->move();
-	}
+        // Tell each human to try moving
+        for (int pos = 0; pos < numHumans; ++pos) {
+            humans[pos]->move();
+        }
 
-	// Deal with infection propagation.
-	processInfection();
+        // Deal with infection propagation.
+        processInfection();
 
-	// Tell each human to draw itself on board with updated infection status
-	for(int pos=0; pos<numHumans; ++pos) {
-	    humans[pos]->draw();
-	}
+        // Tell each human to draw itself on board with updated infection status
+        for (int pos = 0; pos < numHumans; ++pos) {
+            humans[pos]->draw();
+        }
 
-	// Print statistics.
-	cout << conio::gotoRowCol(numRows+3, 1) 
-	     << "Time=" << currentTime 
-	     << " Total Humans=" << numHumans
-	     << " Total Doctors=" << numDoctors
-	     << " Total Cured=" << numCured
-	     << " Total Infected=" << numInfected << flush;
+        // Print statistics.
+        cout << conio::gotoRowCol(numRows + 3, 1)
+            << "Time=" << currentTime 
+            << " Total Humans=" << numHumans
+            << " Total Doctors=" << numDoctors
+            << " Total Cured=" << numCured
+            << " Total Infected=" << numInfected << flush;
 
-	//If all humans are cured, end simulation
-	if(allCured() == true) break;
+        //If all humans are cured, end simulation
+        if (allCured()) break;
 
-	// Sleep specified microseconds
-	usleep(uSleepTime);
+        // Sleep specified microseconds
+        usleep(uSleepTime);
     }
 
     // Position the cursor so prompt shows up on its own line
@@ -114,8 +109,8 @@ void Board::run() {
  * @return If even one human is uninfected, returns false. Otherwise, returns true.
  */
 bool Board::allInfected() {
-    for(int i=0; i<numHumans; ++i) {
-	if(humans[i]->isInfected() == false) return false;
+    for (int i = 0; i < numHumans; ++i) {
+	    if (humans[i]->isInfected() == false) return false;
     }
 
     return true;
@@ -126,8 +121,8 @@ bool Board::allInfected() {
  * @return If even one human is not cured, returns false. Otherwise, returns true.
  */
 bool Board::allCured() {
-    for(int i = 0; i < numHumans; i++) {
-	if(humans[i]->isCured() == false) return false;
+    for (int i = 0; i < numHumans; i++) {
+	    if (humans[i]->isCured() == false) return false;
     }
 
     return true;
@@ -141,85 +136,85 @@ bool Board::allCured() {
  * one is a doctor, the other becomes cured of infection and can't be infected again.
  */
 void Board::processInfection() {
-    for( int i=0; i<numHumans; ++i ) {
-        for( int j=i+1; j<numHumans; ++j ) {
-	    if( isNextTo(humans[i], humans[j]) ){
-		//Non-infected human next to infected human
-	        if( humans[i]->isInfected() && humans[j]->isInfected()==false ) {
-		    //Chance of becoming infected
-		    int num = rand()%4;
-		    switch(num) {
-			case 0:
-			    humans[j]->setInfected();
-			    break;
-			default:
-			    break;
-		    }
-		} else if( humans[j]->isInfected() && humans[i]->isInfected()==false ) {
-		    //Chance of becoming infected
-		    int num = rand()%4;
-		    switch(num) {
-			case 0:
-			    humans[i]->setInfected();
-			    break;
-			default:
-			    break;
-		    }
-		} 
-		//Doctors next to infected human
-		if(humans[i]->isDoctor() && humans[j]->isInfected()) {
-		    humans[j]->setCured();
-		    //Chance to turn human into doctor
-		    int num2 = rand()%10;
-		    switch(num2) {
-			case 0:
-			    humans[j]->setDoctor();
-			    break;
-			default:
-			    break;
-		    }
-		    //Chance to turn doctor to infected human
-		    int num3 = rand()%8;
-		    switch(num3) {
-			case 0:
-			    humans[i]->setInfected();
-			    break;
-			default:
-			    break;
-		    }
-		} else if(humans[j]->isDoctor() && humans[i]->isInfected()) {
-		    humans[i]->setCured();
-		    //Chance to turn human into doctor
-		    int num2 = rand()%10;
-		    switch(num2) {
-			case 0:
-			    humans[i]->setDoctor();
-			    break;
-			default:
-			    break;
-		    }
-		    //Chance to turn doctor to infected human
-		    int num3 = rand()%8;
-		    switch(num3) {
-			case 0:
-			    humans[j]->setInfected();
-			    break;
-			default:
-			    break;
-		    }
-		}
-	    }
-	}
+    for (int i = 0; i < numHumans; ++i) {
+        for (int j = i + 1; j < numHumans; ++j) {
+            if (isNextTo(humans[i], humans[j])) {
+                //Non-infected human next to infected human
+                if (humans[i]->isInfected() && humans[j]->isInfected() == false) {
+                    //Chance of becoming infected
+                    int num = rand() % 4;
+                    switch (num) {
+                        case 0:
+                            humans[j]->setInfected();
+                            break;
+                        default:
+                            break;
+                    }
+                } else if (humans[j]->isInfected() && humans[i]->isInfected() == false) {
+                    //Chance of becoming infected
+                    int num = rand() % 4;
+                    switch (num) {
+                        case 0:
+                            humans[i]->setInfected();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                //Doctors next to infected human
+                if (humans[i]->isDoctor() && humans[j]->isInfected()) {
+                    humans[j]->setCured();
+                    //Chance to turn human into doctor
+                    int num2 = rand() % 10;
+                    switch (num2) {
+                        case 0:
+                            humans[j]->setDoctor();
+                            break;
+                        default:
+                            break;
+                    }
+                    //Chance to turn doctor to infected human
+                    int num3 = rand() % 8;
+                        switch (num3) {
+                        case 0:
+                            humans[i]->setInfected();
+                            break;
+                        default:
+                            break;
+                    }
+                } else if( humans[j]->isDoctor() && humans[i]->isInfected()) {
+                    humans[i]->setCured();
+                    //Chance to turn human into doctor
+                    int num2 = rand() % 10;
+                    switch (num2) {
+                        case 0:
+                            humans[i]->setDoctor();
+                            break;
+                        default:
+                            break;
+                    }
+                    //Chance to turn doctor to infected human
+                    int num3 = rand() % 8;
+                    switch (num3) {
+                        case 0:
+                            humans[j]->setInfected();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
     }
 
     // Reset the board 'numInfected' count and recount how many are infected.
     numInfected = 0;
     numCured = 0;
     numDoctors = 0;
-    for( int i=0; i<numHumans; ++i ) {
-        if( humans[i]->isInfected() ) numInfected++;
-	if(humans[i]->isCured()) numCured++;
-	if(humans[i]->isDoctor()) numDoctors++;
+    for (int i = 0; i < numHumans; ++i) {
+        if (humans[i]->isInfected()) numInfected++;
+        if (humans[i]->isCured()) numCured++;
+        if (humans[i]->isDoctor()) numDoctors++;
     }
 }
 
@@ -232,15 +227,15 @@ void Board::processInfection() {
  * @return Whether the human calling this function may move to the specified row and column.
  */
 bool Board::tryMove(int row, int col) {
-    int tryRow, tryCol=-1;
+    int tryRow, tryCol = -1;
 
     // If off board, the move is not permitted
-    if( row<0 || row>=numRows || col<0 || col>=numCols ) return false;
+    if (row<0 || row >= numRows || col < 0 || col >= numCols) return false;
 
     // Else if another human is on the same location, the move is not permitted
-    for(int i=0; i<numHumans; ++i) {
+    for (int i = 0; i < numHumans; ++i) {
         humans[i]->getLocation(tryRow, tryCol);
-	if( row==tryRow && col==tryCol ) return false;
+	    if (row == tryRow && col == tryCol) return false;
     }
 
     // No problems, so the move is permitted
@@ -262,6 +257,5 @@ bool Board::isNextTo(Human *h1, Human* h2) {
 
     // Return whether h1 and h2 are on adjacent squares in any direction 
     // (horizontally, vertically, diagonally).
-    return abs(h1Row-h2Row)<=1 && abs(h1Col-h2Col)<=1;
+    return abs(h1Row-h2Row) <= 1 && abs(h1Col-h2Col) <= 1;
 }
-
