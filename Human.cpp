@@ -23,7 +23,7 @@ using namespace std;
  * @param initInfected whether the human is initially infected.
  * @param theBoard a pointer to the board (used to ask board whether a proposed move is ok).
  */
-Human::Human(int initRow, int initCol, bool initInfected, Board* theBoard) {
+Human::Human(int initRow, int initCol, bool initInfected, Board *theBoard) {
     row = initRow;
     col = initCol;
     infected = initInfected;
@@ -48,7 +48,7 @@ Human::~Human() {
  */
 void Human::move() {
     // Generate a +/- 2 row and column delta.
-    int rowDelta = rand() % 5- 2, colDelta = rand() % 5 - 2;
+    int rowDelta = rand() % 5 - 2, colDelta = rand() % 5 - 2;
 
     // Ask the board whether you
     if (board->tryMove(row + rowDelta, col + colDelta)) {
@@ -84,7 +84,7 @@ void Human::setLocation(int newRow, int newCol) {
  * Sets this human object's state to infected.
  */
 void Human::setInfected() {
-    if(this->isCured() == false) {
+    if(!this->isCured()) {
         infected = true;
         doctor = false;
         cured = false;

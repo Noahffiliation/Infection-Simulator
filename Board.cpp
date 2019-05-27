@@ -110,7 +110,7 @@ void Board::run() {
  */
 bool Board::allInfected() {
     for (int i = 0; i < numHumans; ++i) {
-	    if (humans[i]->isInfected() == false) return false;
+	    if (!humans[i]->isInfected()) return false;
     }
 
     return true;
@@ -122,7 +122,7 @@ bool Board::allInfected() {
  */
 bool Board::allCured() {
     for (int i = 0; i < numHumans; i++) {
-	    if (humans[i]->isCured() == false) return false;
+	    if (!humans[i]->isCured()) return false;
     }
 
     return true;
@@ -140,7 +140,7 @@ void Board::processInfection() {
         for (int j = i + 1; j < numHumans; ++j) {
             if (isNextTo(humans[i], humans[j])) {
                 //Non-infected human next to infected human
-                if (humans[i]->isInfected() && humans[j]->isInfected() == false) {
+                if (humans[i]->isInfected() && !humans[j]->isInfected()) {
                     //Chance of becoming infected
                     int num = rand() % 4;
                     switch (num) {
@@ -150,7 +150,7 @@ void Board::processInfection() {
                         default:
                             break;
                     }
-                } else if (humans[j]->isInfected() && humans[i]->isInfected() == false) {
+                } else if (humans[j]->isInfected() && !humans[i]->isInfected()) {
                     //Chance of becoming infected
                     int num = rand() % 4;
                     switch (num) {
@@ -230,7 +230,7 @@ bool Board::tryMove(int row, int col) {
     int tryRow, tryCol = -1;
 
     // If off board, the move is not permitted
-    if (row<0 || row >= numRows || col < 0 || col >= numCols) return false;
+    if (row < 0 || row >= numRows || col < 0 || col >= numCols) return false;
 
     // Else if another human is on the same location, the move is not permitted
     for (int i = 0; i < numHumans; ++i) {
@@ -248,7 +248,7 @@ bool Board::tryMove(int row, int col) {
  * @param h2 pointer to second human object.
  * @return Whether or not h1 and h2 are on adjacent squares.
  */
-bool Board::isNextTo(Human *h1, Human* h2) {
+bool Board::isNextTo(Human *h1, Human *h2) {
     // Get human location information
     int h1Row, h1Col;
     h1->getLocation(h1Row, h1Col);

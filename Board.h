@@ -39,7 +39,7 @@ class Board {
       bool allCured();
       bool isNextTo(Human* h1, Human* h2);
 
-      Human* humans[MAX_HUMAN_COUNT];
+      Human *humans[MAX_HUMAN_COUNT];
       int numHumans;
       int numInfected;
       int numCured;

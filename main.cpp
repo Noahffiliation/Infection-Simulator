@@ -26,7 +26,7 @@ int main() {
     srandom(time(NULL));
 
     cout << "This infection simulation puts one doctor against one infected. The doctor must cure all the humans before he falls to the infection." << endl;
-    cout << "Type RUN to start simulation:" << endl;
+    cout << "Type RUN to start simulation: ";
     string x;
     cin >> x;
 
