@@ -3,7 +3,7 @@ This is a shell simulator for an infection scenario. The simulation starts with 
 
 ## Usage
 ```
->>>make
+$ make
 
->>>./infectsim
+$ ./infectsim
 ```
