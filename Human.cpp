@@ -6,7 +6,6 @@
  * @date March 2016
  */
 
-#include <cstdlib>
 #include <iostream>
 
 #include "Human.h"
@@ -52,7 +51,7 @@ Human::~Human() {
  */
 void Human::move() {
   // Generate a +/- 2 row and column delta.
-  int rowDelta = rand() % 5 - 2, colDelta = rand() % 5 - 2;
+  int rowDelta = Board::getRandom(-2, 2), colDelta = Board::getRandom(-2, 2);
 
   // Ask the board whether you
   if (board->tryMove(row + rowDelta, col + colDelta)) {

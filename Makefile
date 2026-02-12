@@ -15,7 +15,7 @@ $(EXEC): $(OBJ)
 simulation: $(OBJ)
 
 clean:
-	rm -f $(EXEC) $(OBJ) run_tests $(TEST_OBJ) *.gcno *.gcda *.gcov
+	rm -f $(EXEC) $(OBJ) run_tests $(TEST_OBJ) *.gcno *.gcda *.gcov *.info tests/*.gcno tests/*.gcda tests/*.gcov tests/*.info
 
 tests: $(TEST_OBJ)
 	g++ -o run_tests $(TEST_OBJ) -lgcov --coverage

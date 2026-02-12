@@ -1,6 +1,8 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include <random>
+
 /**
  * @file Board.h
  * @brief the Board class declaration file
@@ -12,7 +14,7 @@
 //----------------------------------------------------
 // "forward" declaration of Board. Tell the compiler that this will be
 // defined properly further "forward" in the program. This is needed because
-// both classes reference each other. Otherwise, when include "Human.h" and 
+// both classes reference each other. Otherwise, when include "Human.h" and
 // the compiler finds a reference to Board, it will complain.
 //----------------------------------------------------
 class Board;
@@ -26,28 +28,36 @@ using namespace std;
  * @brief The Board class declaration.
  */
 class Board {
-  public:
-      Board(int numRows, int numCols, int numHumans);
-      ~Board();
-      void run();
-      bool tryMove(int row, int col);
-      static const int MAX_HUMAN_COUNT = 100;
+public:
+  Board(int numRows, int numCols, int numHumans);
+  ~Board();
+  void run();
+  bool tryMove(int row, int col);
+  static const int MAX_HUMAN_COUNT = 100;
 
-  protected:
-      void processInfection();
-      bool allInfected();
-      bool allCured();
-      bool isNextTo(Human* h1, Human* h2);
+  // Random number generation
+  static void seedRandom(unsigned int seed);
+  static int getRandom(int max);
+  static int getRandom(int min, int max);
 
-      Human *humans[MAX_HUMAN_COUNT];
-      int numHumans;
-      int numInfected;
-      int numCured;
-      int numDoctors;
-      int currentTime;
-      int numRows;
-      int numCols;
-      int uSleepTime;
+protected:
+  void processInfection();
+  bool allInfected();
+  bool allCured();
+  bool isNextTo(Human *h1, Human *h2);
+
+  Human *humans[MAX_HUMAN_COUNT];
+  int numHumans;
+  int numInfected;
+  int numCured;
+  int numDoctors;
+  int currentTime;
+  int numRows;
+  int numCols;
+  int uSleepTime;
+
+private:
+  static std::mt19937 engine;
 };
 
 #endif

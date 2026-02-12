@@ -6,7 +6,6 @@
 #include <cstdlib>
 #include <iostream>
 
-
 class TestBoard : public Board {
 public:
   TestBoard(int rows, int cols, int humans) : Board(rows, cols, humans) {
@@ -195,7 +194,7 @@ void run(int &total, int &passed) {
     // 1 Human. logic: infects 1. loops until all infected (which is true
     // immediately). So it should run init, infect, and exit loop.
     // Use fewer humans to ensure faster termination but enough for interactions
-    srand(1); // Ensure deterministic behavior
+    Board::seedRandom(1); // Ensure deterministic behavior
     TestBoard b(10, 10, 20);
     b.setSleepTime(0);
     b.cleanupHumans();
