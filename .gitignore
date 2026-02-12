@@ -5,3 +5,4 @@ infectsim
 *.gcda
 *.gcno
 run_tests
+coverage.info

@@ -22,7 +22,9 @@ tests: $(TEST_OBJ)
 
 coverage: tests
 	./run_tests
-	gcov Board.cpp Human.cpp
+	lcov --capture --directory . --output-file coverage.info
+	lcov --remove coverage.info '/usr/*' --output-file coverage.info
+	lcov --list coverage.info
 soln:
 	tar cvf $(SOLN) Makefile *.cpp *.h
 	@echo "The tarfile is '$(SOLN)'."
