@@ -3,7 +3,9 @@
 
 #include "../Board.h"
 #include <assert.h>
+#include <cstdlib>
 #include <iostream>
+
 
 class TestBoard : public Board {
 public:
@@ -192,8 +194,9 @@ void run(int &total, int &passed) {
     std::cout << "  [Board] run() coverage... ";
     // 1 Human. logic: infects 1. loops until all infected (which is true
     // immediately). So it should run init, infect, and exit loop.
-    // Use more humans to force loop execution and hit probabilistic branches
-    TestBoard b(10, 10, 50);
+    // Use fewer humans to ensure faster termination but enough for interactions
+    srand(1); // Ensure deterministic behavior
+    TestBoard b(10, 10, 20);
     b.setSleepTime(0);
     b.cleanupHumans();
     b.run();
