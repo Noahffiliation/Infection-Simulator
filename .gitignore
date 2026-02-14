@@ -1,8 +1,3 @@
 .vscode
 *.o
 infectsim
-*.gcov
-*.gcda
-*.gcno
-run_tests
-coverage.info
