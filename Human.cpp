@@ -6,6 +6,7 @@
  * @date March 2016
  */
 
+#include <cstdlib>
 #include <iostream>
 
 #include "Human.h"
@@ -20,34 +21,30 @@ using namespace std;
  * @param initRow the initial human row location.
  * @param initCol the initial human column location.
  * @param initInfected whether the human is initially infected.
- * @param theBoard a pointer to the board (used to ask board whether a proposed
- * move is ok).
+ * @param theBoard a pointer to the board (used to ask board whether a proposed move is ok).
  */
-Human::Human(int initRow, int initCol, bool initInfected, Board *theBoard) {
-  row = initRow;
-  col = initCol;
-  infected = initInfected;
-  board = theBoard;
-  doctor = false;
-  cured = false;
+Human::Human(int initRow, int initCol, bool initInfected, Board* theBoard) {
+    row = initRow;
+    col = initCol;
+    infected = initInfected;
+    board = theBoard;
 }
 
 /**
  * @brief The Human class destructor.
- * The Human class destructor does nothing (so far), but is here as a
- * placeholder to remind you that it is a good idea for classes to have
- * destructors, even if you can't think of work for destructor at this point.
+ * The Human class destructor does nothing (so far), but is here as a placeholder to remind
+ * you that it is a good idea for classes to have destructors, even if you can't think of 
+ * work for destructor at this point.
  */
 Human::~Human() {
-  // Nothing to do
+    // Nothing to do
 }
 
 /**
  * @brief Have the human try to move.
  * To know whether it is ok to move to some position (r,c), ask the board
  * whether the position is ok. E.g., "if( board->tryMove(r,c) ) ..."
- * If the move is ok, then update the human's row and column to reflect the
- * move.
+ * If the move is ok, then update the human's row and column to reflect the move.
  */
 void Human::move() {
     // Generate a +/- 2 row and column delta.
@@ -63,12 +60,12 @@ void Human::move() {
 /**
  * @brief Get the human's current row/col location.
  * Returns the human's current row/column location via the reference parameters.
- * @param[out] currentRow the human's current row
+ * @param[out] currentRow the human's current row  
  * @param[out] currentCol the human's current column
  */
-void Human::getLocation(int &currentRow, int &currentCol) {
-  currentRow = row;
-  currentCol = col;
+void Human::getLocation(int& currentRow, int& currentCol) {
+    currentRow = row;
+    currentCol = col;
 }
 
 /**
@@ -99,7 +96,9 @@ void Human::setInfected() {
  * @brief reports whether this human is infected.
  * @return whether this human object is infected.
  */
-bool Human::isInfected() { return infected; }
+bool Human::isInfected() {
+    return infected;
+}
 
 /**
  * @brief Draws the human.
@@ -125,28 +124,32 @@ void Human::draw() {
  * Sets human object to a doctor.
  */
 void Human::setDoctor() {
-  infected = false;
-  doctor = true;
-  cured = true;
+    infected = false;
+    doctor = true;
+    cured = true;
 }
 
-/**
+/** 
  * @brief Sets human as cured.
  * Sets human object as cured.
  */
 void Human::setCured() {
-  infected = false;
-  cured = true;
+    infected = false;
+    cured = true;
 }
 
 /**
  * @brief reports whether this human is cured.
  * @return whether this human object is cured.
  */
-bool Human::isCured() { return cured; }
+bool Human::isCured() {
+    return cured;
+}
 
 /**
  * @brief reports whether this human is a doctor.
  * @return whether this human object is a doctor.
  */
-bool Human::isDoctor() { return doctor; }
+bool Human::isDoctor() {
+    return doctor;
+}

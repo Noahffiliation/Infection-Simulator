@@ -6,9 +6,8 @@
  * @date March 2016
  **/
 
-#include <cstdlib>
-#include <ctime>
 #include <iostream>
+#include <cstdlib>
 #include <string>
 
 // Board.h needs to be included here because we create a Board
@@ -28,12 +27,10 @@ using namespace std;
 int main() {
     srandom( time(NULL) );
 
-  cout << "This infection simulation puts one doctor against one infected. The "
-          "doctor must cure all the humans before he falls to the infection."
-       << endl;
-  cout << "Type RUN to start simulation: ";
-  string x;
-  cin >> x;
+    cout << "This infection simulation puts one doctor against one infected. The doctor must cure all the humans before he falls to the infection." << endl;
+    cout << "Type RUN to start simulation";
+    string x;
+    cin >> x;
 
     if (x == "RUN") {
         //Board board(20, 80, 70);
@@ -41,5 +38,5 @@ int main() {
         board.run();
     }
 
-  return 0;
+    return 0;
 }

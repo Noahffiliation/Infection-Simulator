@@ -6,8 +6,6 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <random>
-
 /**
  * @file Board.h
  * @brief the Board class declaration file
@@ -19,7 +17,7 @@
 //----------------------------------------------------
 // "forward" declaration of Board. Tell the compiler that this will be
 // defined properly further "forward" in the program. This is needed because
-// both classes reference each other. Otherwise, when include "Human.h" and
+// both classes reference each other. Otherwise, when include "Human.h" and 
 // the compiler finds a reference to Board, it will complain.
 //----------------------------------------------------
 class Board;
