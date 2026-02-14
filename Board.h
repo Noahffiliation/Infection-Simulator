@@ -1,3 +1,8 @@
+//----------------------------------------------------
+// The "#ifndef ..." and "#define ..." lines are used to prevent the compiler from accidentally
+// processing the contents of Board.h more than once, thus causing "Board redefined" errors.
+// At the end of the file is a "#endif" which marks the end of the "#ifndef" section.
+//----------------------------------------------------
 #ifndef BOARD_H
 #define BOARD_H
 
@@ -19,6 +24,7 @@
 //----------------------------------------------------
 class Board;
 
+// The Board class uses the Human class, so must include the Human class declaration.
 #include "Human.h"
 
 using namespace std;
@@ -28,36 +34,32 @@ using namespace std;
  * @brief The Board class declaration.
  */
 class Board {
-public:
-  Board(int numRows, int numCols, int numHumans);
-  ~Board();
-  void run();
-  bool tryMove(int row, int col);
-  static const int MAX_HUMAN_COUNT = 100;
+  public:
+    Board(int numRows, int numCols, int numHumans); // Board class constructor
+    ~Board();                 // Board class destructor
+    void run();               // Main function that runs the simulation
+    bool tryMove(int row, int col); // Function that lets human know whether move is ok
+    static const int MAX_HUMAN_COUNT = 100; // Maximum humans simulation can handle
 
-  // Random number generation
-  static void seedRandom(unsigned int seed);
-  static int getRandom(int max);
-  static int getRandom(int min, int max);
+  protected:
+    //----------------------------------------------------
+    // Private functions and data. These cannot be referenced other than by functions that are
+    // part of the Board class.
+    //----------------------------------------------------
+    void processInfection();  // Go through and process infection status
+    bool allInfected();       // Tells whether all humans are infected
+    bool allCured();	      // Tells whether all humans are cured
+    bool isNextTo(Human* h1, Human* h2); // Tells whether one human is next to another
 
-protected:
-  void processInfection();
-  bool allInfected();
-  bool allCured();
-  bool isNextTo(Human *h1, Human *h2);
-
-  Human *humans[MAX_HUMAN_COUNT];
-  int numHumans;
-  int numInfected;
-  int numCured;
-  int numDoctors;
-  int currentTime;
-  int numRows;
-  int numCols;
-  int uSleepTime;
-
-private:
-  static std::mt19937 engine;
+    Human* humans[MAX_HUMAN_COUNT];
+    int numHumans;            // Num humans
+    int numInfected;          // Num humans infected
+    int numCured;	      // Num humans cured
+    int numDoctors;	      // Num doctors
+    int currentTime;          // Current time in simulation
+    int numRows;              // Number of rows in board
+    int numCols;              // Number of cols in board
+    int uSleepTime;           // Num microseconds to sleep between updates
 };
 
-#endif
+#endif //#ifndef BOARD_H

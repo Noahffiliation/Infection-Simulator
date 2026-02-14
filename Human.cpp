@@ -50,14 +50,14 @@ Human::~Human() {
  * move.
  */
 void Human::move() {
-  // Generate a +/- 2 row and column delta.
-  int rowDelta = Board::getRandom(-2, 2), colDelta = Board::getRandom(-2, 2);
+    // Generate a +/- 2 row and column delta.
+    int rowDelta=rand()%5-2, colDelta=rand()%5-2;
 
-  // Ask the board whether you
-  if (board->tryMove(row + rowDelta, col + colDelta)) {
-    row += rowDelta;
-    col += colDelta;
-  }
+    // Ask the board whether you
+    if(board->tryMove(row+rowDelta, col+colDelta)) {
+	row+=rowDelta;
+	col+=colDelta;
+    }
 }
 
 /**
@@ -78,8 +78,8 @@ void Human::getLocation(int &currentRow, int &currentCol) {
  * @param[in] newCol the human's new column location
  */
 void Human::setLocation(int newRow, int newCol) {
-  row = newRow;
-  col = newCol;
+    row=newRow;
+    col=newCol;
 }
 
 /**
@@ -87,11 +87,12 @@ void Human::setLocation(int newRow, int newCol) {
  * Sets this human object's state to infected.
  */
 void Human::setInfected() {
-  if (!this->isCured()) {
-    infected = true;
-    doctor = false;
-    cured = false;
-  }
+    if(this->isCured() == false) {
+	infected = true;
+	doctor = false;
+	cured = false;
+    }
+
 }
 
 /**
@@ -106,17 +107,17 @@ bool Human::isInfected() { return infected; }
  * Remember that the first conio row=1, and first conio col=1.
  */
 void Human::draw() {
-  cout << conio::gotoRowCol(row + 1, col + 1);
-  if (infected) {
-    cout << conio::bgColor(conio::LIGHT_RED);
-  } else if (doctor) {
-    cout << conio::bgColor(conio::LIGHT_BLUE);
-  } else if (cured) {
-    cout << conio::bgColor(conio::YELLOW);
-  } else {
-    cout << conio::bgColor(conio::LIGHT_GREEN);
-  }
-  cout << '@' << conio::resetAll() << flush;
+    cout << conio::gotoRowCol(row+1,col+1);
+    if( infected ) {
+        cout << conio::bgColor(conio::LIGHT_RED);
+    } else if(doctor) {
+	cout << conio::bgColor(conio::LIGHT_BLUE);
+    } else if(cured) {
+	cout << conio::bgColor(conio::YELLOW);
+    } else {
+        cout << conio::bgColor(conio::LIGHT_GREEN);
+    }
+    cout << '@' << conio::resetAll() << flush;
 }
 
 /**
